@@ -4,16 +4,16 @@ const axios = require('axios');
 const  cors = require('cors');
 const mongoose = require('mongoose');
 const util = require('util');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
+const {User} = require('./dbmodels.js');
+const AuthController = require('./authentication/AuthController.js');
 
 const port = process.env.PORT || 3000;
 
-//mongoose.Promise = global.Promise;
-//mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/UsersDB');
-
-let key = {
-	accKey: "001a918c0dc345938b9ca76c2ab97574"
-};
+mongoose.Promise = global.Promise;
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/PikyFavorites');
 
 let app = express();
 app.use(cors());
@@ -39,9 +39,7 @@ app.post('/images', (request, response) => {
 	);
 });
 
-app.get('/test', (req, res) => {
-	res.send('it works');
-});
+app.post('/users', AuthController);
 
 
 app.listen(port, () => {
