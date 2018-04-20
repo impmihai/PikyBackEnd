@@ -1,5 +1,9 @@
 let mongoose = require('mongoose');
 
+/* 
+ * Model for the object that will be inserted
+ * in the database
+ */
 let User = mongoose.model('User', {
 
     email: {

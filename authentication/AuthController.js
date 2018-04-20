@@ -8,7 +8,10 @@ const {User} = require('../dbmodels.js');
 mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/Users');
 
-module.exports = (req, res) => {
+/* 
+ * Register a user
+ */
+let register = (req, res) => {
   
     let hashedPassword = bcrypt.hashSync(req.body.password, 8);
     
@@ -17,12 +20,38 @@ module.exports = (req, res) => {
         password : hashedPassword
     });
     user.save().then((doc) => {
-        /* Creating a token*/
+        /* Creating a token */
         let token = jwt.sign({ id: doc._id }, config.secret, {
             expiresIn: 86400 // expires in 24 hours
         });
+        /* Send back a token */
         res.status(200).send({ auth: true, token: token });
     }, (e) => {
-        res.status(500).send("There was a problem registering the user.");
+        return res.status(500).send("There was a problem registering the user.");
     }); 
 };
+
+/* 
+ * Login a user 
+ */
+let login = (req, res) => {
+    /*Look for the user in the database */
+    User.findOne({email: req.body.email}, (err, user) => {
+        if (err) 
+            return res.status(500).send('Error on the server.');
+        if (!user) 
+            return res.status(404).send('No user found.');
+        let isPassValid = bcrypt.compareSync(req.body.password, user.password);
+        if (!isPassValid) 
+            return res.status(401).send({ auth: false, token: null });
+        let token = jwt.sign({ id: user._id }, config.secret, {
+            expiresIn: 86400 // expires in 24 hours
+        });
+        res.status(200).send({ auth: true, token: token });
+    });
+};
+
+module.exports = {
+    register: register,
+    login: login
+}

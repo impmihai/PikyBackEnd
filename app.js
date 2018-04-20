@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 const {User} = require('./dbmodels.js');
-const AuthController = require('./authentication/AuthController.js');
+const {register, login} = require('./authentication/AuthController.js');
 
 const port = process.env.PORT || 3000;
 
@@ -39,7 +39,33 @@ app.post('/images', (request, response) => {
 	);
 });
 
-app.post('/users', AuthController);
+app.get('/jessica', (request, response) => {
+
+	let query = "Jessica Nigri";
+	Bing.images("Jessica Nigri", (err, res, body) => {
+			let urls = [];
+			let size = 0;
+			if (body.value.length > 10) {
+				size = 10;
+			} else {
+				size = body.value.length;
+			}
+			for (let i = 0; i < size; i++) {
+				urls.push(body.value[i].contentUrl);
+			}
+			response.send({
+				url: urls
+			});
+		},
+		{
+			count: 1,
+			adult: 'Moderate'
+		}
+	);
+});
+
+app.post('/register', register);
+app.post('/login', login);
 
 
 app.listen(port, () => {
