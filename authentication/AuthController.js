@@ -6,7 +6,7 @@ const config = require('../config');
 const {User} = require('../dbmodels.js');
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/Users');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/PikyFavorites');
 
 /* 
  * Register a user
@@ -36,9 +36,7 @@ let register = (req, res) => {
  */
 let login = (req, res) => {
     /*Look for the user in the database */
-    User.findOne({email: req.body.email}, (err, user) => {
-        if (err) 
-            return res.status(500).send('Error on the server.');
+    User.findOne({email: req.body.email}).then((user) => {
         if (!user) 
             return res.status(404).send('No user found.');
         let isPassValid = bcrypt.compareSync(req.body.password, user.password);
@@ -48,6 +46,8 @@ let login = (req, res) => {
             expiresIn: 86400 // expires in 24 hours
         });
         res.status(200).send({ auth: true, token: token });
+    }, (e) => {
+        res.status(500).send('Error on the server.');
     });
 };
 
