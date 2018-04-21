@@ -15,20 +15,28 @@ let register = (req, res) => {
   
     let hashedPassword = bcrypt.hashSync(req.body.password, 8);
     
-    let user = new User({
-        email : req.body.email,
-        password : hashedPassword
-    });
-    user.save().then((doc) => {
-        /* Creating a token */
-        let token = jwt.sign({ id: doc._id }, config.secret, {
-            expiresIn: 86400 // expires in 24 hours
-        });
-        /* Send back a token */
-        res.status(200).send({ auth: true, token: token });
+    let query = User.findOne({ 'email': req.body.email}).then((user) => {
+        if (user) {
+            return res.status(400).send("User already registered");
+        } else {
+            let user = new User({
+                email : req.body.email,
+                password : hashedPassword
+            });
+            user.save().then((doc) => {
+                /* Creating a token */
+                let token = jwt.sign({ id: doc._id }, config.secret, {
+                    expiresIn: 86400 // expires in 24 hours
+                });
+                /* Send back a token */
+                res.status(200).send({ auth: true, token: token });
+            }, (e) => {
+                return res.status(500).send("There was a problem registering the user.");
+            }); 
+        }
     }, (e) => {
-        return res.status(500).send("There was a problem registering the user.");
-    }); 
+        return res.status(500).send("Database error");
+    });
 };
 
 /* 
