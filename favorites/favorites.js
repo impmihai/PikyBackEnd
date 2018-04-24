@@ -23,23 +23,64 @@ let addFavorites = (req, res) => {
                 auth: false,
                 message: 'Failed to authenticate token.'
             });
+        let existingFav = [];
+        User.findById(decoded.id).then((user) => {
+            existingFav = user.favorites.filter(favs => favs.url === req.body.url);
+            if (existingFav.length) {
+                return res.status(400).send("Already favorited.");
+            } else {
+                let new_url = {url: req.body.url};
+                User.findByIdAndUpdate(decoded.id, {
+                    $push: {
+                        favorites: new_url
+                    }
+                }, {
+                    returnOriginal: false
+                }).then((result) => {
+                    if (!result) 
+                        return res.status(400).send("Couldn't update favorites.");
+                    res.status(200).send("Favorites updated");
+                }, (e) => {
+                    res.status(500).send("There was a problem finding the user.");
+                });
+            }
+        });  
+    });
+};
+
+let removeFavorites = (req, res) => {
+    let token = req.headers['x-access-token'];
+    if (!token) 
+        return res.status(401).send({
+            auth: false,
+            message: 'No token provided.'
+        });
+  
+    jwt.verify(token, config.secret, (err, decoded) => {
+        if (err)
+            return res.status(500).send({
+                auth: false,
+                message: 'Failed to authenticate token.'
+            });
+        let new_url = {url: req.body.url};
         User.findByIdAndUpdate(decoded.id, {
-            $push: {
-                favorites: req.body.url
+            $pull: {
+                favorites: new_url
             }
         }, {
             returnOriginal: false
         }).then((result) => {
             if (!result) 
-                return res.status(400).send("Couldn't update favorites.");
-            res.status(200).send("Favorites updated");
+                return res.status(400).send("Couldn't unfavorite.");
+            res.status(200).send("Picture unfavorited");
         }, (e) => {
             res.status(500).send("There was a problem finding the user.");
         });
+        
     });
 };
 
 module.exports = {
-    favorites: addFavorites
+    addFavorites: addFavorites,
+    removeFavorites: removeFavorites
 }
-
