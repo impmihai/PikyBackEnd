@@ -12,17 +12,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/PikyFavor
 let addFavorites = (req, res) => {
     let token = req.headers['x-access-token'];
     if (!token) 
-        return res.status(401).send({
-            auth: false,
-            message: 'No token provided.'
-        });
+        return res.status(401).send("No token provided.");
   
     jwt.verify(token, config.secret, (err, decoded) => {
         if (err)
-            return res.status(500).send({
-                auth: false,
-                message: 'Failed to authenticate token.'
-            });
+            return res.status(500).send("Failed to authenticate token.");
         User.findById(decoded.id).then((user) => {
             existingFav = user.favorites.filter(favs => favs.url === req.body.url);
             if (existingFav.length) {
@@ -51,17 +45,11 @@ let addFavorites = (req, res) => {
 let allFavorites = (req, res) => {
     let token = req.headers['x-access-token'];
     if (!token) 
-        return res.status(401).send({
-            auth: false,
-            message: 'No token provided.'
-        });
+        return res.status(401).send("No token provided.");
   
     jwt.verify(token, config.secret, (err, decoded) => {
         if (err)
-            return res.status(500).send({
-                auth: false,
-                message: 'Failed to authenticate token.'
-            });
+            return res.status(500).send("Failed to authenticate token.");
         User.findById(decoded.id)
         .then((result) => {
             if (!result) 
@@ -77,17 +65,11 @@ let allFavorites = (req, res) => {
 let removeFavorites = (req, res) => {
     let token = req.headers['x-access-token'];
     if (!token) 
-        return res.status(401).send({
-            auth: false,
-            message: 'No token provided.'
-        });
+        return res.status(401).send("No token provided.");
   
     jwt.verify(token, config.secret, (err, decoded) => {
         if (err)
-            return res.status(500).send({
-                auth: false,
-                message: 'Failed to authenticate token.'
-            });
+            return res.status(500).send("Failed to authenticate token.");
         let new_url = {url: req.body.url};
         User.findByIdAndUpdate(decoded.id, {
             $pull: {

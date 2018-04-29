@@ -49,7 +49,7 @@ let login = (req, res) => {
             return res.status(404).send('No user found.');
         let isPassValid = bcrypt.compareSync(req.body.password, user.password);
         if (!isPassValid) 
-            return res.status(401).send({ auth: false, token: null });
+            return res.status(401).send("Incorrect pasword");
         let token = jwt.sign({ id: user._id }, config.secret, {
             expiresIn: 86400 // expires in 24 hours
         });
