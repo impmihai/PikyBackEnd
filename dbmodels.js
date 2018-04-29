@@ -16,13 +16,7 @@ let User = mongoose.model('User', {
         type: String,
         required: true
     },
-    favorites: [{
-        url: {
-            type: String,
-            minlength: 1,
-            trim: true
-        }
-    }]
+	favorites: []
 });
 
 module.exports = {User};
