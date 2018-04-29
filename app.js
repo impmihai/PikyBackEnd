@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
 
 const {User} = require('./dbmodels.js');
 const {register, login} = require('./authentication/AuthController.js');
-const {addFavorites, removeFavorites} = require('./favorites/favorites.js');
+const {addFavorites, removeFavorites, allFavorites} = require('./favorites/favorites.js');
 
 const port = process.env.PORT || 3000;
 
@@ -69,6 +69,7 @@ app.post('/register', register);
 app.post('/login', login);
 app.post('/addFavorites', addFavorites);
 app.post('/removeFavorites', removeFavorites);
+app.get('/allFavorites', allFavorites);
 
 
 app.listen(port, () => {
