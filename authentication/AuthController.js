@@ -15,6 +15,7 @@ let register = (req, res) => {
   
     let hashedPassword = bcrypt.hashSync(req.body.password, 8);
     
+    /* Verify if the user is already registered, if not , register him */
     let query = User.findOne({ 'email': req.body.email}).then((user) => {
         if (user) {
             return res.status(400).send("User already registered");
@@ -47,13 +48,14 @@ let login = (req, res) => {
     User.findOne({email: req.body.email}).then((user) => {
         if (!user) 
             return res.status(404).send('No user found.');
+        /* Verify if the password is valid */
         let isPassValid = bcrypt.compareSync(req.body.password, user.password);
         if (!isPassValid) 
             return res.status(401).send("Incorrect pasword");
         let token = jwt.sign({ id: user._id }, config.secret, {
             expiresIn: 86400 // expires in 24 hours
         });
-        res.status(200).send({ auth: true, token: token });
+        res.status(200).send({ auth: true, token: token }); //Send back token
     }, (e) => {
         res.status(500).send('Error on the server.');
     });

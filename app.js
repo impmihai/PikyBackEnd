@@ -7,7 +7,7 @@ const util = require('util');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-const {User} = require('./dbmodels.js');
+const {User} = require('./dbmodels.js'); // User Model
 const {register, login} = require('./authentication/AuthController.js');
 const {addFavorites, removeFavorites, allFavorites} = require('./favorites/favorites.js');
 
@@ -17,7 +17,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/PikyFavorites');
 
 let app = express();
-app.use(cors());
+app.use(cors()); // Necessary for front-end(post, get)
 app.use(bodyParser.json());
 
 let Bing = require('node-bing-api')({accKey: "a6fc255a848a472fa444b18790caa8cd"});
@@ -40,6 +40,9 @@ app.post('/images', (request, response) => {
 	);
 });
 
+/* 
+ *Get method for the feed pictures 
+ */
 app.get('/jessica', (request, response) => {
 
 	let query = "Jessica Nigri";
@@ -55,11 +58,13 @@ app.get('/jessica', (request, response) => {
 		},
 		{
 			count: 1,
-			adult: 'Moderate'
+			adult: 'Moderate' //Moderate filtered
 		}
 	);
 });
-/* Rute */
+/*
+ * Endpoints
+ */
 
 app.post('/register', register);
 app.post('/login', login);

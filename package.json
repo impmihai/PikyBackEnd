@@ -27,6 +27,7 @@
     "mongodb": "^3.0.7",
     "mongoose": "^5.0.15",
     "node-bing-api": "^4.0.0",
+    "passport-facebook": "^2.1.1",
     "util": "^0.10.3",
     "util.promisify": "^1.0.0"
   }
