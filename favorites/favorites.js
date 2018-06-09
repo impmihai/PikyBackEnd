@@ -53,7 +53,7 @@ let allFavorites = (req, res) => {
         User.findById(decoded.id)
         .then((result) => {
             if (!result) 
-                return res.status(400).send("Couldn't update favorites.");
+                return res.status(400).send("Couldn't find favorites.");
             res.status(200).send(result.favorites);
         }, (e) => {
             res.status(500).send("There was a problem finding the user.");

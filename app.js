@@ -20,7 +20,7 @@ let app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-let Bing = require('node-bing-api')({accKey: "001a918c0dc345938b9ca76c2ab97574"});
+let Bing = require('node-bing-api')({accKey: "a6fc255a848a472fa444b18790caa8cd"});
 
 /* 
  * Simple post method for the images
@@ -45,12 +45,7 @@ app.get('/jessica', (request, response) => {
 	let query = "Jessica Nigri";
 	Bing.images("Jessica Nigri", (err, res, body) => {
 			let urls = [];
-			let size = 0;
-			if (body.value.length > 10) {
-				size = 10;
-			} else {
-				size = body.value.length;
-			}
+			let size = body.value.length;
 			for (let i = 0; i < size; i++) {
 				urls.push(body.value[i].contentUrl);
 			}
