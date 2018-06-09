@@ -64,6 +64,7 @@ app.get('/jessica', (request, response) => {
 		}
 	);
 });
+/* Rute */
 
 app.post('/register', register);
 app.post('/login', login);
