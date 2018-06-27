@@ -25,7 +25,7 @@ let Bing = require('node-bing-api')({accKey: "a6fc255a848a472fa444b18790caa8cd"}
  * Simple post method for the images
  */
 app.post('/images', (request, response) => {
-
+	
 	let query = request.body.query;
 	Bing.images(query, (err, res, body) => {
 			response.send({
@@ -43,7 +43,7 @@ app.post('/images', (request, response) => {
  *Get method for the feed pictures 
  */
 app.get('/jessica', (request, response) => {
-
+	console.log("got get on jessica");
 	let query = "Jessica Nigri";
 	Bing.images("Jessica Nigri", (err, res, body) => {
 			let urls = [];
