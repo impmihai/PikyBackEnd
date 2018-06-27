@@ -42,7 +42,7 @@ app.post('/images', (request, response) => {
 /* 
  *Get method for the feed pictures 
  */
-app.get('/jessica', (request, response) => {
+app.get('/jessic', (request, response) => {
 
 	let query = "Jessica Nigri";
 	Bing.images("Jessica Nigri", (err, res, body) => {
