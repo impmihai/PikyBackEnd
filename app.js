@@ -21,7 +21,6 @@ app.use(cors()); // Necessary for front-end(post, get)
 app.use(bodyParser.json());
 
 let Bing = require('node-bing-api')({accKey: "a6fc255a848a472fa444b18790caa8cd"});
-
 /* 
  * Simple post method for the images
  */
