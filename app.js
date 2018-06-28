@@ -44,7 +44,7 @@ app.post('/images', (request, response) => {
  */
 app.get('/jessica', (request, response) => {
 	console.log("got get on jessica");
-	let query = "Jessica Nigri";
+	let query = "bmw m3";
 	Bing.images(query, (err, res, body) => {
 			let urls = [];
 			let size = body.value.length;
