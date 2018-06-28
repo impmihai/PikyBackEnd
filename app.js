@@ -28,8 +28,13 @@ app.post('/images', (request, response) => {
 	
 	let query = request.body.query;
 	Bing.images(query, (err, res, body) => {
+			let urls = [];
+			let size = body.value.length;
+			for (let i = 0; i < size; i++) {
+				urls.push(body.value[i].contentUrl);
+			}
 			response.send({
-				url: body.value[0].contentUrl
+				url: urls
 			});
 		},
 		{
