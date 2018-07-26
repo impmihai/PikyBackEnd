@@ -20,7 +20,7 @@ let app = express();
 app.use(cors()); // Necessary for front-end(post, get)
 app.use(bodyParser.json());
 
-let Bing = require('node-bing-api')({accKey: "d81a229c90344d8d9ce6ac6ab0256f6b"});
+let Bing = require('node-bing-api')({accKey: "55bb4075ac304e11805bd2912f17a83b"});
 /* 
  * Simple post method for the images
  */
