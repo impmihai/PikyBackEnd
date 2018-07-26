@@ -38,8 +38,7 @@ app.post('/images', (request, response) => {
 			});
 		},
 		{
-			count: 1,
-			adult: 'Moderate'
+			count: 1
 		}
 	);
 });
