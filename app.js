@@ -37,8 +37,9 @@ app.post('/images', (request, response) => {
 				url: urls
 			});
 		},
-		{
-			count: 1
+		{	
+			count: 1,
+			adult: 'Moderate'
 		}
 	);
 });
