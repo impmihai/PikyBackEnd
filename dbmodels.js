@@ -23,6 +23,17 @@ let User = mongoose.model('User', {
             trim: true
         }
     }]
+    /* TO DO: add to user model
+     *  uploadedPictures[]:pictureId
+     *  likedPhothos[]:picutureId
+     *  commentedOn[]:pictureId
+     */
 });
+
+/* TO DO: add new model for image
+ * likes[]:userId
+ * comments[]:{string,userId}
+ * url/data - string / grid fs
+ */
 
 module.exports = {User};
